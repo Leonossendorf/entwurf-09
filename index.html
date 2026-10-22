@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="de-DE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Zum Kapellenhof · Alte Schankwirtschaft seit 1834 · Ochtrup-Welbergen (Entwurf)</title>
+<meta name="description" content="Unverbindlicher Entwurf für die Website der Gaststätte Zum Kapellenhof in Ochtrup-Welbergen.">
+<meta name="theme-color" content="#23452F">
+<link rel="icon" href="img/logo.png">
+<link rel="preload" href="fonts/youngserif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/kalam-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="entwurf-band">Unverbindlicher Entwurf von Leon Oßendorf · kein offizieller Auftritt des Kapellenhofs</div>
+
+<header class="kopf">
+  <a class="marke" href="#start" aria-label="Zum Kapellenhof, zur Startseite">
+    <img src="img/logo.png" alt="Logo Zum Kapellenhof, Alte Schankwirtschaft" width="64" height="51">
+    <span><b>Zum Kapellenhof</b><small>Alte Schankwirtschaft · seit 1834</small></span>
+  </a>
+  <nav class="nav" aria-label="Hauptmenü">
+    <a href="#tafel">Geöffnet?</a>
+    <a href="#raeume">Räume</a>
+    <a href="#feiern">Feiern</a>
+    <a href="#geschichte">Seit 1834</a>
+    <a href="#anfahrt">Anfahrt</a>
+  </nav>
+  <a class="btn btn-klein" href="tel:+492553993744">02553 993744</a>
+</header>
+
+<main id="start">
+
+  <!-- HERO MIT TAFEL -->
+  <section class="hero" aria-labelledby="hero-titel">
+    <div class="hero-bild" role="img" aria-label="Der Kapellenhof an der Dorfstraße in Welbergen, mit Terrasse und Sonnenschirmen"></div>
+    <div class="hero-innen">
+      <div class="hero-text">
+        <p class="dach">Gaststätte seit 1834 · Welbergen</p>
+        <h1 id="hero-titel">Zum Kapellenhof</h1>
+        <p class="unter">Alte Schankwirtschaft mit Gastzimmer, Saal und Terrasse. Ein Treffpunkt für Jung und Alt, mitten im Dorf.</p>
+        <div class="hero-knoepfe">
+          <a class="btn" href="#feiern">Feier anfragen</a>
+          <a class="btn btn-hell" href="tel:+492553993744">Anrufen</a>
+        </div>
+      </div>
+
+      <div class="tafel-platz" id="tafel">
+        <figure class="tafel" aria-labelledby="tafel-titel">
+          <div class="rahmen">
+            <div class="schiefer">
+              <h2 id="tafel-titel" class="sr-only">Heute im Kapellenhof</h2>
+              <div class="tafel-inhalt" id="tafelInhalt" aria-live="polite">
+                <!-- wird von js/app.js beschriftet; Fallback ohne JavaScript: -->
+                <p class="kz kz-klein">Öffnungszeiten</p>
+                <p class="kz">Fr 19 bis ca. 1 Uhr</p>
+                <p class="kz">Sa ab 16 Uhr (Winter ab 18 Uhr)</p>
+                <p class="kz">So Frühschoppen ab 10 Uhr</p>
+              </div>
+            </div>
+            <i class="schraube s1"></i><i class="schraube s2"></i><i class="schraube s3"></i><i class="schraube s4"></i>
+          </div>
+          <div class="ablage" aria-hidden="true"><span class="kreide"></span><span class="schwamm"></span></div>
+        </figure>
+        <button class="tafel-demo" type="button" id="kreideAuf" aria-expanded="false" aria-controls="kreidePanel">
+          <span>Demo</span> So schreiben Sie selbst an die Tafel
+        </button>
+        <div class="kreide-panel" id="kreidePanel" hidden>
+          <p class="kp-titel">An die Tafel schreiben</p>
+          <p class="kp-info">Geschlossene Gesellschaft, Sonderöffnung, Frühschoppen mit Musik: einmal antippen, schon steht es auf der Website. Dauert vom Handy aus wenige Sekunden.</p>
+          <div class="kp-vorlagen" role="group" aria-label="Vorlagen">
+            <button type="button" data-text="Heute geschlossene Gesellschaft!">Geschlossene Gesellschaft</button>
+            <button type="button" data-text="Heute Abend Sonderöffnung ab 18 Uhr">Sonderöffnung</button>
+            <button type="button" data-text="Sonntag Frühschoppen mit Musik">Frühschoppen mit Musik</button>
+          </div>
+          <label class="kp-frei">Oder eigener Text
+            <input type="text" id="kreideText" maxlength="60" placeholder="Ihr Text für die Tafel">
+          </label>
+          <div class="kp-knoepfe">
+            <button type="button" class="btn btn-klein" id="kreideSchreiben">Anschreiben</button>
+            <button type="button" class="btn btn-klein btn-hell" id="kreideWischen">Wegwischen</button>
+          </div>
+          <p class="kp-hinweis">Entwurf: Ihr Text bleibt nur auf diesem Gerät gespeichert.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RÄUME -->
+  <section class="abschnitt raeume" id="raeume" aria-labelledby="raeume-titel">
+    <div class="abschnitt-kopf">
+      <p class="dach">Unser Haus</p>
+      <h2 id="raeume-titel">Die Gaststätte ist schon immer der Mittelpunkt unseres Hauses gewesen.</h2>
+      <p>Ein Treffpunkt für Jung und Alt, wo es durchaus auch schon mal etwas lauter und unruhiger zugehen darf.</p>
+    </div>
+    <div class="raum-raster">
+      <article class="raum raum-gross">
+        <img src="img/theke.jpg" alt="Die Theke der alten Schankwirtschaft mit Bleiglasfenstern und Barhockern" loading="lazy" width="1600" height="778">
+        <div class="raum-text">
+          <h3>Die Schankwirtschaft</h3>
+          <p>Theke, Stammtische und Frühschoppen am Sonntag. Hier wird seit Generationen ausgeschenkt.</p>
+        </div>
+      </article>
+      <article class="raum">
+        <img src="img/gastzimmer.jpg" alt="Gemütlicher Raum mit Eckbank und gedeckten Tischen" loading="lazy" width="1600" height="778">
+        <div class="raum-text">
+          <p class="platz">12 bis 16 Personen</p>
+          <h3>Das Gastzimmer</h3>
+          <p>Ideal für kleine Gruppen.</p>
+        </div>
+      </article>
+      <article class="raum">
+        <img src="img/saal.jpg" alt="Der helle Saal mit langen Tischen und Sprossenfenstern" loading="lazy" width="1600" height="1069">
+        <div class="raum-text">
+          <p class="platz">bis zu 70 Personen</p>
+          <h3>Der Saal</h3>
+          <p>Für Gruppen, Vereine und Feiern.</p>
+        </div>
+      </article>
+      <article class="raum">
+        <img src="img/haus-terrasse.jpg" alt="Die Terrasse mit Sonnenschirmen vor dem Backsteinhaus des Kapellenhofs" loading="lazy" width="1038" height="522">
+        <div class="raum-text">
+          <h3>Die Terrasse</h3>
+          <p>Bei erträglicher Musik sind im Sommer lange Sommernächte nicht ausgeschlossen.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FEIERN -->
+  <section class="abschnitt feiern" id="feiern" aria-labelledby="feiern-titel">
+    <div class="feiern-raster">
+      <div class="feiern-text">
+        <p class="dach">Gruppen und Vereine</p>
+        <h2 id="feiern-titel">Ihre Feier im Kapellenhof</h2>
+        <p>Geburtstag, Vereinsabend oder Familienfeier, gern auch außerhalb der Öffnungszeiten nach Absprache. Sagen Sie uns kurz, was Sie vorhaben, den Rest besprechen wir persönlich.</p>
+        <img class="feiern-bild" src="img/saal-feier.jpg" alt="Festlich gedeckter Saal mit gelben Blumen auf den Tischen" loading="lazy" width="1600" height="778">
+      </div>
+
+      <form class="anfrage" id="anfrage" novalidate>
+        <p class="form-hinweis">Entwurf: Diese Anfrage wird nicht versendet.</p>
+        <fieldset class="wahl">
+          <legend>Welcher Raum?</legend>
+          <label><input type="radio" name="raum" value="Gastzimmer (12–16 Personen)" checked><span><b>Gastzimmer</b><small>12 bis 16 Personen</small></span></label>
+          <label><input type="radio" name="raum" value="Saal (bis 70 Personen)"><span><b>Saal</b><small>bis 70 Personen</small></span></label>
+          <label><input type="radio" name="raum" value="noch offen"><span><b>Weiß ich noch nicht</b><small>Sie beraten mich</small></span></label>
+        </fieldset>
+        <div class="feld-reihe">
+          <label>Datum<input type="date" name="datum" required></label>
+          <label>Personen<input type="number" name="personen" min="1" max="200" inputmode="numeric" placeholder="z. B. 30" required></label>
+        </div>
+        <label>Anlass
+          <select name="anlass">
+            <option>Geburtstag</option>
+            <option>Familienfeier</option>
+            <option>Verein oder Stammtisch</option>
+            <option>Firmenfeier</option>
+            <option>Etwas anderes</option>
+          </select>
+        </label>
+        <div class="feld-reihe">
+          <label>Ihr Name<input type="text" name="name" autocomplete="name" required></label>
+          <label>Telefon<input type="tel" name="telefon" autocomplete="tel" inputmode="tel" required></label>
+        </div>
+        <label>Noch etwas? <span class="optional">(freiwillig)</span><textarea name="nachricht" rows="2" placeholder="z. B. mit Essen, ab 18 Uhr"></textarea></label>
+        <div class="anfrage-knoepfe">
+          <button class="btn btn-wa" type="submit" data-weg="WhatsApp">Per WhatsApp senden</button>
+          <button class="btn btn-hell" type="submit" data-weg="E-Mail">Per E-Mail senden</button>
+        </div>
+        <p class="form-fehler" id="formFehler" role="alert" hidden>Bitte Datum, Personen, Name und Telefon ausfüllen.</p>
+      </form>
+    </div>
+
+    <div class="vorschau" id="vorschau" hidden>
+      <div class="vorschau-karte" role="dialog" aria-modal="true" aria-labelledby="vorschau-titel">
+        <p class="dach" id="vorschau-titel">So käme Ihre Anfrage bei Familie Meier an</p>
+        <div class="blase" id="blase"></div>
+        <p class="vorschau-info">Im Entwurf wird nichts verschickt. In der fertigen Seite öffnet sich WhatsApp oder Ihr Mailprogramm mit diesem Text, Sie tippen nur noch auf Senden.</p>
+        <button class="btn btn-klein" type="button" id="vorschauZu">Schließen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GESCHICHTE -->
+  <section class="abschnitt geschichte" id="geschichte" aria-labelledby="geschichte-titel">
+    <div class="abschnitt-kopf">
+      <p class="dach">Unsere Geschichte</p>
+      <h2 id="geschichte-titel">Für einen halben Taler und 15 Groschen fing alles an.</h2>
+      <p>Am 12. Juni 1834 gab die Königliche Regierung ihr „Ja-Wort“ zur Eröffnung einer Gaststätte in Welbergen. Die Originalurkunde ist heute noch vorhanden, schwarz auf weiß.</p>
+    </div>
+
+    <div class="chronik">
+      <ol class="zeitleiste">
+        <li><span class="jahr">1834</span><div><h3>Die Konzession</h3><p>Der „Zeller“ Bernhard Heinrich Kappelhoff, geboren am 8. September 1812, erhält die Konzession zur Führung einer Schankwirtschaft. Aus dem Landwirt wird ein Land- und Gastwirt.</p></div></li>
+        <li><span class="jahr">danach</span><div><h3>Lastering-Kappelhoff</h3><p>Tochter Katharina heiratet Bernhard Heinrich Lastering. Daher der Doppelname, der bis heute gebräuchlich ist.</p></div></li>
+        <li><span class="jahr">1910</span><div><h3>Das Haus der Gaststätte</h3><p>Es entsteht das Haus, in dem die Gaststätte bis heute untergebracht ist.</p></div></li>
+        <li><span class="jahr">1924</span><div><h3>Die Seele des Hauses</h3><p>Nach dem frühen Tod von Bernhard halten die Witwe Karoline mit 8 Söhnen und Tante Katharina den Betrieb. Katharina macht die Gaststätte zum Treffpunkt für Jung und Alt.</p></div></li>
+        <li><span class="jahr">1947/48</span><div><h3>Der Fachwerkbau</h3><p>An der Stelle des alten Gebäudes entsteht der schmucke Fachwerkbau, bis 1995 ein Stall, heute der Saal.</p></div></li>
+        <li><span class="jahr">1969</span><div><h3>Agnes und Josef Meier</h3><p>Nach dem Umbau übernimmt Tochter Agnes mit Ehemann Josef Meier. Mit Günter, Karin und Robert bewirtschaften sie Gaststätte und Hof bis 1997.</p></div></li>
+        <li><span class="jahr">1997</span><div><h3>Günter Meier</h3><p>Seit dem 1. Oktober 1997 führt Günter Meier das Haus, seit 2003 zusammen mit seiner Frau Nadine.</p></div></li>
+        <li><span class="jahr">2024</span><div><h3>190 Jahre</h3><p>Im Juli 2024 feiert der Kapellenhof sein 190-jähriges Jubiläum. Aus Trinkgeldern von Stammgästen und Geschäftspartnern werden 2.500 Euro für die Kinderkrebshilfe Münster.</p></div></li>
+      </ol>
+
+      <aside class="album" aria-label="Alte Fotos">
+        <figure class="foto f1"><img src="img/alt-1.jpg" alt="Historisches Foto: Gäste vor der alten Schankwirtschaft" loading="lazy"><figcaption>Vor der alten Schankwirtschaft</figcaption></figure>
+        <figure class="foto f2"><img src="img/alt-4.jpg" alt="Historisches Foto: Wirt hinter der Theke" loading="lazy"><figcaption>Hinter der Theke</figcaption></figure>
+        <figure class="foto f3"><img src="img/haus-frueher.jpg" alt="Der Kapellenhof mit Efeu bewachsen" loading="lazy"><figcaption>Der Kapellenhof im Efeu</figcaption></figure>
+        <blockquote class="zitat">
+          <p>„Mit dem Dorf und für das Dorf.“</p>
+          <footer>Günter Meier, zum 175-jährigen Jubiläum 2009</footer>
+        </blockquote>
+      </aside>
+    </div>
+  </section>
+
+  <!-- HEUTE -->
+  <section class="abschnitt heute" aria-label="Fotos von heute">
+    <div class="foto-band">
+      <img src="img/hinter-der-theke.jpg" alt="Drei Menschen lachend hinter der Theke des Kapellenhofs" loading="lazy">
+      <img src="img/190.jpg" alt="Ballons mit der Zahl 190 vor einem Gemälde des Kapellenhofs" loading="lazy">
+      <img src="img/terrasse-abend.jpg" alt="Gäste auf der Terrasse unter Sonnenschirmen" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ANFAHRT & KONTAKT -->
+  <section class="abschnitt anfahrt" id="anfahrt" aria-labelledby="anfahrt-titel">
+    <div class="anfahrt-raster">
+      <div>
+        <p class="dach">So finden Sie uns</p>
+        <h2 id="anfahrt-titel">Dorfstraße 15, mitten in Welbergen</h2>
+        <address>
+          Zum Kapellenhof · Alte Schankwirtschaft<br>
+          Inh. Günter Meier<br>
+          Dorfstraße 15, 48607 Ochtrup-Welbergen
+        </address>
+        <ul class="kontakt-liste">
+          <li><a href="tel:+492553993744"><span>Telefon</span>02553 993744</a></li>
+          <li><a href="https://wa.me/4915126708643" rel="noopener"><span>Mobil und WhatsApp</span>01512 6708643</a></li>
+          <li><a href="mailto:service@zum-kapellenhof.de"><span>E-Mail</span>service@zum-kapellenhof.de</a></li>
+        </ul>
+        <p class="karte-link"><a class="btn btn-hell" href="https://www.openstreetmap.org/search?query=Dorfstra%C3%9Fe%2015%2C%2048607%20Ochtrup" rel="noopener">Route planen</a></p>
+        <p class="klein">Mit der Bahn bis Ochtrup (Münster–Gronau–Enschede), von dort mit dem Taxi.</p>
+      </div>
+      <div class="zeiten">
+        <h3>Öffnungszeiten</h3>
+        <div class="zeiten-raster">
+          <div class="saison" id="sommer">
+            <p class="saison-titel">Sommer <small>1. Mai bis 1. November</small></p>
+            <dl><dt>Freitag</dt><dd>19 bis ca. 1 Uhr</dd><dt>Samstag</dt><dd>16 bis ca. 1 Uhr</dd><dt>Sonntag</dt><dd>10 bis ca. 19 Uhr</dd></dl>
+          </div>
+          <div class="saison" id="winter">
+            <p class="saison-titel">Winter <small>1. November bis 1. Mai</small></p>
+            <dl><dt>Freitag</dt><dd>19 bis ca. 1 Uhr</dd><dt>Samstag</dt><dd>18 bis ca. 1 Uhr</dd><dt>Sonntag</dt><dd>10 bis ca. 14 Uhr</dd></dl>
+          </div>
+        </div>
+        <p class="zeiten-note">Montag bis Donnerstag geschlossen. Letzter Samstag im Monat geschlossen. Für Gruppen und Vereine auch nach Absprache.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="fuss">
+  <div class="fuss-innen">
+    <img src="img/logo.png" alt="" width="80" height="64">
+    <p><b>Zum Kapellenhof</b> · Alte Schankwirtschaft seit 1834 · Dorfstraße 15 · 48607 Ochtrup-Welbergen</p>
+    <p class="fuss-links"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+    <p class="entwurf-hinweis">Unverbindlicher Entwurf von Leon Oßendorf, kein offizieller Auftritt von Zum Kapellenhof. Texte und Fotos stammen von zum-kapellenhof.de und gehören dem Kapellenhof. Nicht zur Veröffentlichung bestimmt.</p>
+  </div>
+</footer>
+
+<nav class="daumen" aria-label="Schnellzugriff">
+  <a href="tel:+492553993744"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>Anrufen</a>
+  <a href="https://wa.me/4915126708643" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.3A10 10 0 1 0 12 2zm5.2 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>WhatsApp</a>
+  <a href="#feiern"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2zm-2 8h14v10H5zm2 2v2h4v-2z"/></svg>Feier anfragen</a>
+</nav>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="kreidestrich"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="1.6"/></filter>
+</svg>
+<script src="js/app.js"></script>
+</body>
+</html>
