@@ -109,33 +109,20 @@ p { margin: 0 0 1em; }
 .kz-zu { opacity: .7; }
 .kreidelinie { display: block; width: 100%; height: 14px; margin: .45rem 0 .65rem; overflow: visible; }
 .kreidelinie path { fill: none; stroke: rgba(242,239,229,.72); stroke-width: 2.2; stroke-linecap: round; filter: url(#kreidestrich); }
-.kz-notiz { position: relative; margin: .2rem 0 .7rem; padding: .25rem 0 .3rem; }
-.kz-notiz .kz-gross { font-size: 1.85rem; }
 
-/* ruhiges Anschreiben: Zeile für Zeile von links nach rechts */
-.schreibt .kz, .schreibt .kreidelinie { clip-path: inset(0 100% 0 0); animation: schreiben .75s cubic-bezier(.3,.6,.3,1) forwards; animation-delay: calc(var(--i, 0) * 140ms + 120ms); }
-@keyframes schreiben { to { clip-path: inset(0 0 0 0); } }
-.wischt { animation: wischen .45s ease forwards; }
-@keyframes wischen { to { opacity: 0; filter: blur(3px); } }
+/* Kreide: Zeile für Zeile angeschrieben (js/app.js), mit Kreidestaub */
+.schreibt .kz { visibility: hidden; }
+.schreibt .kz.dran, .schreibt .kz.fertig { visibility: visible; }
+.schreibt .kreidelinie path { stroke-dasharray: 420; stroke-dashoffset: 420; }
+.schreibt .kreidelinie.fertig path { stroke-dashoffset: 0; transition: stroke-dashoffset .7s cubic-bezier(.35,.6,.35,1); }
+.staub { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: rgba(242,239,229,.75); pointer-events: none; animation: staub 1.4s ease-out forwards; }
+@keyframes staub { 0% { opacity: .9; transform: translate(0,0); } 100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, 14px)); } }
 @media (prefers-reduced-motion: reduce) {
-  .schreibt .kz, .schreibt .kreidelinie { animation: none; clip-path: none; }
-  .wischt { animation: none; opacity: 0; }
+  .schreibt .kz { visibility: visible; }
+  .schreibt .kreidelinie path { stroke-dashoffset: 0; }
+  .staub { display: none; }
   html { scroll-behavior: auto; }
 }
-
-.tafel-demo { display: flex; align-items: center; gap: .6rem; margin: 1.3rem auto 0; padding: .55rem 1rem; min-height: 44px; border: 1px dashed rgba(255,255,255,.55); border-radius: 999px; background: rgba(20,28,22,.55); color: #F4EBD8; font: 600 .95rem/1.2 var(--sans); cursor: pointer; }
-.tafel-demo span { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; padding: .2rem .5rem; border-radius: 999px; background: #E9C98F; color: var(--holz); }
-.tafel-demo:hover { background: rgba(20,28,22,.75); }
-.kreide-panel { position: relative; margin-top: .9rem; padding: 1.1rem 1.2rem 1rem; border-radius: var(--r); background: var(--papier); color: var(--ink); box-shadow: 0 14px 30px rgba(0,0,0,.35); }
-.kp-titel { font: 400 1.2rem/1.2 var(--serif); color: var(--gruen); margin: 0 0 .3rem; }
-.kp-info { font-size: .95rem; color: var(--ink-2); margin-bottom: .8rem; }
-.kp-vorlagen { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: .8rem; }
-.kp-vorlagen button { min-height: 40px; padding: .4rem .85rem; border-radius: 999px; border: 1px solid var(--linie); background: #fff; font: 600 .9rem/1.2 var(--sans); color: var(--ink); cursor: pointer; }
-.kp-vorlagen button:hover, .kp-vorlagen button[aria-pressed="true"] { border-color: var(--gruen); background: #EAF0E6; }
-.kp-frei { display: block; font-size: .85rem; font-weight: 700; color: var(--ink-2); }
-.kp-frei input { margin-top: .3rem; }
-.kp-knoepfe { display: flex; gap: .6rem; margin-top: .8rem; flex-wrap: wrap; }
-.kp-hinweis { font-size: .8rem; color: var(--ink-2); margin: .7rem 0 0; }
 
 /* Abschnitte */
 .abschnitt { padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1rem, 4vw, 3rem); }

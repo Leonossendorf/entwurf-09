@@ -49,21 +49,16 @@
   var inhalt = document.getElementById("tafelInhalt");
   var LINIE = '<svg class="kreidelinie" viewBox="0 0 400 14" preserveAspectRatio="none" aria-hidden="true"><path d="M4 8 C 90 5, 180 10, 270 6 S 380 9, 396 7"/></svg>';
 
-  function notizLesen() {
-    try { return JSON.parse(localStorage.getItem("kapellenhof-tafel") || "null"); } catch (e) { return null; }
-  }
-  function notizSpeichern(text) {
-    try { text ? localStorage.setItem("kapellenhof-tafel", JSON.stringify({ text: text })) : localStorage.removeItem("kapellenhof-tafel"); } catch (e) {}
-  }
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  /* Sonderhinweise trägt Leon auf Zuruf ein, z. B.
+     { datum: "2026-12-24", text: "Heute geschlossene Gesellschaft" } */
+  var SONDER = [];
+
+  function isoTag(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function sonderHeute(d) { var k = isoTag(d); for (var i = 0; i < SONDER.length; i++) if (SONDER[i].datum === k) return SONDER[i].text; return ""; }
 
   function tafelHtml(jetzt) {
-    var heute = tagStart(jetzt), z = zustand(jetzt), zeilen = [], notiz = notizLesen();
+    var heute = tagStart(jetzt), z = zustand(jetzt), zeilen = [], sonder = sonderHeute(heute);
     zeilen.push('<p class="kz kz-klein">Heute, ' + TAGE[heute.getDay()] + ", " + heute.getDate() + ". " + MONATE[heute.getMonth()] + "</p>");
-
-    if (notiz && notiz.text) {
-      zeilen.push('<div class="kz-notiz"><p class="kz kz-gross kz-gelb">' + esc(notiz.text) + "</p></div>");
-    }
 
     var gross, klein = "";
     if (z.offen) {
@@ -82,7 +77,9 @@
         klein = (z.grund === "letzter Samstag im Monat" ? "Letzter Samstag im Monat. " : "") + wann + " ab " + n.o.von + " Uhr " + (n.o.frueh ? "Frühschoppen." : "sind wir wieder da.");
       }
     }
-    if (!(notiz && notiz.text)) {
+    if (sonder) {
+      zeilen.push('<p class="kz kz-gross kz-gelb">' + sonder + "</p>");
+    } else {
       zeilen.push('<p class="kz kz-gross">' + gross + "</p>");
       if (klein) zeilen.push('<p class="kz">' + klein + "</p>");
     }
@@ -125,31 +122,104 @@
     return zeilen.join("");
   }
 
-  function anschreiben() {
-    if (!inhalt) return;
-    inhalt.innerHTML = tafelHtml(new Date());
-    var teile = inhalt.querySelectorAll(".kz, .kreidelinie");
-    for (var i = 0; i < teile.length; i++) teile[i].style.setProperty("--i", i);
-    inhalt.classList.remove("wischt");
-    inhalt.classList.remove("schreibt");
-    void inhalt.offsetWidth;
-    inhalt.classList.add("schreibt");
-  }
-  function tafelZeigen() {
-    var t = document.querySelector(".tafel"), r = t.getBoundingClientRect();
-    if (r.top < 70 || r.top > window.innerHeight * .5) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  /* ---------- Kreide: Zeile für Zeile schreiben ---------- */
+  var schiefer = inhalt ? inhalt.parentNode : null;
+  var lauf = 0;
+
+  // sichtbare Textzeilen eines Elements (relativ zum Element), auch bei Umbruch
+  function zeilenVon(el) {
+    var r = document.createRange(); r.selectNodeContents(el);
+    var box = el.getBoundingClientRect(), rows = [];
+    Array.prototype.forEach.call(r.getClientRects(), function (q) {
+      if (q.width < 1) return;
+      var top = q.top - box.top, row = null;
+      for (var i = 0; i < rows.length; i++) if (Math.abs(rows[i].top - top) < q.height * .5) { row = rows[i]; break; }
+      if (!row) { row = { top: top, bottom: q.bottom - box.top, l: q.left - box.left, r: q.right - box.left }; rows.push(row); }
+      row.top = Math.min(row.top, top); row.bottom = Math.max(row.bottom, q.bottom - box.top);
+      row.l = Math.min(row.l, q.left - box.left); row.r = Math.max(row.r, q.right - box.left);
+    });
+    return rows.sort(function (a, b) { return a.top - b.top; });
   }
 
-  function wischenUndSchreiben() {
+  function maske(el, row, x) {
+    var m = "linear-gradient(#000,#000) 0 0 / 100% " + Math.max(0, row.top) + "px no-repeat, " +
+      "linear-gradient(90deg,#000 " + x + "px, rgba(0,0,0,.35) " + (x + 6) + "px, transparent " + (x + 16) + "px) 0 " + row.top + "px / 100% " + (row.bottom - row.top + 2) + "px no-repeat";
+    el.style.webkitMask = m; el.style.mask = m;
+  }
+
+  function staub(x, y) {
+    var d = document.createElement("i");
+    d.className = "staub";
+    var g = 1 + Math.random() * 1.6;
+    d.style.cssText = "left:" + (x + Math.random() * 4 - 2) + "px;top:" + (y + Math.random() * 6 - 2) + "px;width:" + g + "px;height:" + g + "px;--dx:" + (Math.random() * 8 - 4).toFixed(1) + "px;--dy:" + (10 + Math.random() * 16).toFixed(1) + "px";
+    schiefer.appendChild(d);
+    setTimeout(function () { d.remove(); }, 1500);
+  }
+
+  function schreibeElement(el, id, fertig) {
+    if (el.tagName.toLowerCase() === "svg") {
+      el.classList.add("fertig");
+      setTimeout(fertig, 520);
+      return;
+    }
+    var rows = zeilenVon(el), sb = schiefer.getBoundingClientRect(), eb = el.getBoundingClientRect();
+    var ox = eb.left - sb.left, oy = eb.top - sb.top;
+    var tempo = el.classList.contains("kz-gross") ? 4.2 : 2.6; // ms pro Pixel, große Schrift ruhiger
+    var ri = 0;
+    if (rows.length) maske(el, { top: 0, bottom: 0 }, 0);
+    el.classList.add("dran");
+    function naechsteZeile() {
+      if (id !== lauf) return;
+      if (ri >= rows.length) { el.style.webkitMask = ""; el.style.mask = ""; el.classList.remove("dran"); el.classList.add("fertig"); setTimeout(fertig, 90); return; }
+      var row = rows[ri], start = null, dauer = Math.max(260, (row.r - row.l) * tempo), letzt = 0;
+      function schritt(t) {
+        if (id !== lauf) return;
+        if (start === null) start = t;
+        var p = Math.min(1, (t - start) / dauer);
+        var e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // sanft an- und auslaufen
+        var x = row.l + (row.r - row.l) * e;
+        maske(el, row, x);
+        if (t - letzt > 45 && p < 1) { letzt = t; staub(ox + x, oy + row.bottom - 4); }
+        if (p < 1) requestAnimationFrame(schritt);
+        else { ri++; setTimeout(naechsteZeile, 70); }
+      }
+      requestAnimationFrame(schritt);
+    }
+    naechsteZeile();
+  }
+
+  function anschreiben(jetzt, animiert) {
     if (!inhalt) return;
+    lauf++;
+    var id = lauf;
+    inhalt.innerHTML = tafelHtml(jetzt || new Date());
     var reduziert = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduziert) { anschreiben(); tafelZeigen(); return; }
-    tafelZeigen();
-    inhalt.classList.add("wischt");
-    setTimeout(anschreiben, 430);
+    if (!animiert || reduziert || !window.requestAnimationFrame) { inhalt.classList.remove("schreibt"); return; }
+    inhalt.classList.add("schreibt");
+    var teile = Array.prototype.slice.call(inhalt.querySelectorAll(".kz, .kreidelinie"));
+    var i = 0;
+    (function weiter() {
+      if (id !== lauf) return;
+      if (i >= teile.length) { inhalt.classList.remove("schreibt"); return; }
+      schreibeElement(teile[i++], id, weiter);
+    })();
   }
 
-  anschreiben();
+  // erst schreiben, wenn die Tafel zu sehen ist und die Kreideschrift geladen ist
+  var test = new URLSearchParams(location.search).get("datum");
+  var testDatum = test ? new Date(test) : null;
+  if (testDatum && isNaN(testDatum)) testDatum = null;
+  var reduziertStart = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  anschreiben(testDatum, false);
+  if (inhalt && !reduziertStart && "IntersectionObserver" in window) {
+    inhalt.classList.add("schreibt");
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () {
+      var io = new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) { io.disconnect(); anschreiben(testDatum, true); }
+      }, { threshold: .25 });
+      io.observe(inhalt);
+    });
+  }
 
   // Saison in der Öffnungszeiten-Box markieren
   var aktiv = document.getElementById(istSommer(new Date()) ? "sommer" : "winter");
@@ -157,38 +227,6 @@
     aktiv.classList.add("jetzt");
     var t = aktiv.querySelector(".saison-titel");
     if (t) t.insertAdjacentHTML("beforeend", " <em>jetzt</em>");
-  }
-
-  /* ---------- Demo: selbst an die Tafel schreiben ---------- */
-  var auf = document.getElementById("kreideAuf"), panel = document.getElementById("kreidePanel"), feld = document.getElementById("kreideText");
-  if (auf && panel) {
-    auf.addEventListener("click", function () {
-      var offen = panel.hidden;
-      panel.hidden = !offen;
-      auf.setAttribute("aria-expanded", String(offen));
-    });
-    panel.querySelectorAll(".kp-vorlagen button").forEach(function (b) {
-      b.addEventListener("click", function () {
-        feld.value = b.getAttribute("data-text");
-        panel.querySelectorAll(".kp-vorlagen button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
-        notizSpeichern(feld.value.trim());
-        wischenUndSchreiben();
-      });
-    });
-    document.getElementById("kreideSchreiben").addEventListener("click", function () {
-      var v = feld.value.trim();
-      if (!v) { feld.focus(); return; }
-      notizSpeichern(v);
-      wischenUndSchreiben();
-    });
-    document.getElementById("kreideWischen").addEventListener("click", function () {
-      feld.value = "";
-      panel.querySelectorAll(".kp-vorlagen button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
-      notizSpeichern("");
-      wischenUndSchreiben();
-    });
-    var gespeichert = notizLesen();
-    if (gespeichert && gespeichert.text) feld.value = gespeichert.text;
   }
 
   /* ---------- Feieranfrage (Entwurf: zeigt nur die Vorschau) ---------- */
@@ -229,13 +267,6 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !vorschau.hidden) zu(); });
   }
 
-  // Tafel um Mitternacht und zu jeder vollen Stunde neu prüfen
-  setInterval(function () { if (new Date().getMinutes() === 0) anschreiben(); }, 60000);
-
-  // für den eigenen Test: ?datum=2026-10-31T15:00
-  var test = new URLSearchParams(location.search).get("datum");
-  if (test && inhalt) {
-    var td = new Date(test);
-    if (!isNaN(td)) { inhalt.innerHTML = tafelHtml(td); }
-  }
+  // zu jeder vollen Stunde still aktualisieren (ohne neue Animation)
+  setInterval(function () { if (!testDatum && new Date().getMinutes() === 0) anschreiben(null, false); }, 60000);
 })();
